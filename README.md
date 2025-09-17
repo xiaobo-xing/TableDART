@@ -11,7 +11,7 @@
 - Edit `project_config/config.py` such as dataset paths, table image directories, output folders, API models, and checkpoints，etc.
 
 ## 2. Data Preparation
-1. **Data Download**
+1. **Data Download.**
     Download the publicly available MMTab dataset.
     ```
       # train
