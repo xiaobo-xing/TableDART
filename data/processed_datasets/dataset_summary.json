@@ -1,0 +1,30 @@
+{
+  "created_by": "Mixed Dataset Creator",
+  "total_samples": 11500,
+  "train_samples": 10000,
+  "val_samples": 1500,
+  "val_ratio": 0.13043478260869565,
+  "target_datasets": [
+    "TABMWP",
+    "WTQ",
+    "TAT-QA",
+    "TabFact",
+    "InfoTabs"
+  ],
+  "dataset_distribution": {
+    "train": {
+      "TAT-QA": 2000,
+      "TabFact": 2000,
+      "TABMWP": 2000,
+      "InfoTabs": 2000,
+      "WTQ": 2000
+    },
+    "val": {
+      "InfoTabs": 300,
+      "WTQ": 300,
+      "TABMWP": 300,
+      "TabFact": 300,
+      "TAT-QA": 300
+    }
+  }
+}

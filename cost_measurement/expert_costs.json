@@ -1,0 +1,51 @@
+{
+  "date": "",
+  "cost_calculation_weights": {
+    "latency_weight": 0.5,
+    "throughput_weight": 0.5,
+    "memory_weight": 0,
+    "note": ""
+  },
+  "expert_costs": {
+    "TextExpert": {
+      "avg_latency": 1.4453833992286982,
+      "tokens_per_second": 44.19004836364536,
+      "comprehensive_cost_v2": 0.7340064643298216,
+      "efficiency_score": 63.865415019282544,
+      "samples": 70
+    },
+    "VLMExpert": {
+      "avg_latency": 1.5585722254376326,
+      "tokens_per_second": 18.778192005024273,
+      "comprehensive_cost_v2": 0.8059127442851685,
+      "efficiency_score": 57.98117437661986,
+      "samples": 70
+    },
+    "Fusion": {
+      "total_cost": 1.8585722254376327,
+      "estimated_tps": 18.778192005024273,
+      "comprehensive_cost_v2": 0.9559127442851685,
+      "efficiency_score": 50.48117437661986,
+      "breakdown": {
+        "parallel_experts_max_latency": 1.5585722254376326,
+        "api_cost": 0.3
+      }
+    }
+  },
+  "settings": {
+    "num_samples_per_dataset": 10,
+    "warmup_runs": 5,
+    "timed_runs": 10,
+    "device": "cuda",
+    "total_samples": 70,
+    "datasets": [
+      "WTQ",
+      "TabFact",
+      "FeTaQA",
+      "TAT-QA",
+      "HiTab",
+      "TABMWP",
+      "InfoTabs"
+    ]
+  }
+}
