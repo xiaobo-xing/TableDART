@@ -12,16 +12,13 @@
 
 ## 2. Data Preparation
 1. **Data Download**
+    Download the publicly available MMTab dataset.
     ```
       # train
       wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-instruct_table_images_82K.zip
-      mv MMTab-instruct_table_images_82K.zip
-      unzip MMTab-instruct_table_images_82K.zip
 
       # test
       wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-eval_table_images_23K.zip
-      mv MMTab-eval_table_images_23K.zip hippo/
-      unzip MMTab-eval_table_images_23K.zip
     ```
 
 2. **Create mixed training/validation splits**. Regenerate the mixed data with:
