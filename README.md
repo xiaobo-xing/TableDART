@@ -40,7 +40,7 @@ Measure the cost vector before training, our measured result is provided at `cos
 ## 4. Training
 Start to train the gating network by running: `python train.py`
   - Checkpoints and plots will appear in `checkpoints/Mixed_Dataset_Training/` (configurable via `cfg["TRAINING"]["CHECKPOINT_DIR"])`.
-  - ** ⭐️ Our trained checkpoint is provided** at `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`. 
+  - **⭐️ Our trained checkpoint is provided** at `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`. 
     - (Optional) Update `cfg["TRAINING"]["INFERENCE_CHECKPOINT"]` to your checkpoint path so evaluation scripts pick it up automatically.
 
 ## 5. Inference
