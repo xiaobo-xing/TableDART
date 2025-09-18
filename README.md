@@ -12,14 +12,8 @@
 
 ## 2. Data Preparation
 1. **Data Download.**
-    Download the publicly available MMTab dataset.
-    ```
-      # train
-      wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-instruct_table_images_82K.zip
-
-      # test
-      wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-eval_table_images_23K.zip
-    ```
+    Download the publicly available MMTab dataset. For a direct and fair comparison, our work uses the same training and test datasets as established prior work, including HIPPO and Table-LLaVA.
+  
 
 2. **Create mixed training/validation splits**. Regenerate the mixed data with:
    ```bash
@@ -47,7 +41,7 @@ Measure the cost vector before training, our measured result is provided at `cos
 ## 4. Training
 Start to train the gating network by running: `python train.py`
   - Checkpoints and plots will appear in `checkpoints/Mixed_Dataset_Training/` (configurable via `cfg["TRAINING"]["CHECKPOINT_DIR"])`.
-  - Our trained checkpoint is provided at `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`. 
+  - **Our trained checkpoint is provided** at `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`. 
     - (Optional) Update `cfg["TRAINING"]["INFERENCE_CHECKPOINT"]` to your checkpoint path so evaluation scripts pick it up automatically.
 
 ## 5. Inference
