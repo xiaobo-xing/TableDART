@@ -18,7 +18,7 @@ To address this challenge, we propose **TableDART**, a training-efficient framew
 
 Extensive experiments on seven benchmarks demonstrate that TableDART achieves state-of-the-art performance on 4 out of 7 benchmarks among open-source models, surpassing the strongest baseline by an average of **4.02%**, while maintaining significant computational efficiency gains.
 
-![TableDART Architecture](TableDART_architecture_illustraion.pdf)
+![TableDART Architecture](TableDART_architecture_illustraion.jpg)
 
 
 ## 2. Dataset Description
