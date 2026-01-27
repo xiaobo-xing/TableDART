@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 
+# Load environment variables for API access
 project_root = os.path.dirname(os.path.abspath(__file__))
 dotenv_path = os.path.join(project_root, ".env")
 loaded_env = load_dotenv(dotenv_path=dotenv_path)
@@ -41,10 +42,12 @@ skipped_data_log = []
 
 
 def custom_collate_fn(batch_list):
+    """Collate function to handle variable-length sequences and diverse data types."""
     valid_batch = [item for item in batch_list if item is not None]
     if not valid_batch:
         return None
     batched = {}
+    # Keys that should be kept as lists (e.g., for processing after batching)
     keys_to_list = [
         "raw_table",
         "question",
@@ -56,6 +59,7 @@ def custom_collate_fn(batch_list):
         "question_id",
         "image",
     ]
+    # Keys that should be stacked into tensors
     keys_to_stack = ["target_ids", "target_attention_mask"]
     for key in keys_to_list:
         batched[key] = [item[key] for item in valid_batch]
@@ -74,6 +78,7 @@ def create_data_loader_with_error_handling(
     table_image_dir,
     filter_dataset_name=None,
 ):
+    """Create data loader with graceful handling of missing images."""
     dataset = create_data_loader(
         data_path,
         batch_size,
@@ -87,6 +92,7 @@ def create_data_loader_with_error_handling(
     )
     if dataset is None:
         return None
+    # Wrap dataset getitem to handle missing images
     original_getitem = dataset.__getitem__
 
     def safe_getitem(idx):

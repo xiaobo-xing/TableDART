@@ -6,6 +6,7 @@ from tqdm import tqdm
 from dotenv import load_dotenv
 import pandas as pd
 
+# Load environment variables for API access
 project_root = os.path.dirname(os.path.abspath(__file__))
 dotenv_path = os.path.join(project_root, ".env")
 loaded_env = load_dotenv(dotenv_path=dotenv_path)
@@ -18,6 +19,7 @@ from utils.efficiency_utils import InferenceEfficiencyMonitor
 
 
 def parse_args():
+    """Parse command-line arguments for inference configuration."""
     parser = argparse.ArgumentParser(description="TableGPT2Expert Model Inference")
     parser.add_argument(
         "--checkpoint",

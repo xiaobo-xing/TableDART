@@ -25,6 +25,7 @@ from project_config.config import cfg
 
 
 def _parse_json_and_extract_answer(json_string_batch):
+    """Parse JSON responses and extract answer field from expert outputs."""
     if isinstance(json_string_batch, str):
         json_string_batch = [json_string_batch]
     extracted_answers = []
@@ -56,39 +57,52 @@ def _parse_json_and_extract_answer(json_string_batch):
 
 
 class BaseExpert(nn.Module):
+    """
+    Base class for all expert models.
+    Each expert produces intermediate states for gating network feature extraction.
+    """
     def __init__(self, model_id_or_path, cost=1.0):
         super().__init__()
         self.model_id_or_path = model_id_or_path
-        self.cost = cost
+        self.cost = cost  # Cost metric for routing (latency or efficiency)
         self.device = torch.device(cfg["TRAINING"]["DEVICE"])
         self.model = None
         self.tokenizer = None
         self.processor = None
-        self.gate_feature_dim = 0
+        self.gate_feature_dim = 0  # Dimension of features for gating network
 
     def _load_model_resources(self):
         raise NotImplementedError
 
     def extract_gate_features_and_intermediate_state(self, *args, **kwargs):
+        """Extract features for gating network and intermediate model state."""
         raise NotImplementedError
 
     def continue_generation_from_state(self, *args, **kwargs):
+        """Resume generation from saved intermediate state."""
         raise NotImplementedError
 
     def generate_full(self, *args, **kwargs):
+        """Full generation pipeline from input to output."""
         raise NotImplementedError
 
     def forward_for_loss(self, *args, **kwargs):
+        """Forward pass for computing training loss."""
         raise NotImplementedError
 
 
 class TableGPT2Expert(BaseExpert):
+    """
+    Text-based expert using TableGPT2 model.
+    Processes flattened table representations in text format.
+    """
     def __init__(self, model_path=cfg["MODEL"]["TEXT_EXPERT_ID"], cost=1.2):
         super().__init__(model_path, cost)
         self._load_model_resources()
         self.gate_feature_dim = self.model.config.hidden_size
 
     def _load_model_resources(self):
+        """Load pretrained TableGPT2 model and tokenizer."""
         print(f"INFO: Initializing TableGPT2Expert from {self.model_id_or_path}")
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_id_or_path, trust_remote_code=True

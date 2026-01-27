@@ -48,6 +48,7 @@ def _fallback_containment_check(model_output: str, processed_gold_list: list) ->
 
 
 def gumbel_softmax(logits, temperature=1.0, hard=False, eps=1e-10):
+    """Gumbel-softmax for differentiable discrete routing during training."""
     gumbels = (
         -torch.empty_like(logits, memory_format=torch.legacy_contiguous_format)
         .exponential_()

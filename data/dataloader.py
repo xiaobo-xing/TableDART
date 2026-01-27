@@ -10,6 +10,7 @@ from models.prompt.image_prompt import image_template_mapping, DEFAULT_IMAGE_PRO
 from project_config.config import cfg
 
 class ImageNotFoundError(Exception):
+    """Exception raised when table image file is not found."""
 
     def __init__(self, question_id, image_file, image_path, message='Image file not found'):
         self.question_id = question_id
@@ -19,6 +20,10 @@ class ImageNotFoundError(Exception):
         super().__init__(self.message)
 
 class TabularDataset(Dataset):
+    """
+    PyTorch Dataset for multimodal table understanding.
+    Handles both text and image modalities with support for gating network training.
+    """
 
     def __init__(self, data_path, target_tokenizer_name, max_seq_len_target, table_image_dir, filter_dataset_name=None):
         print('INFO: Loading data...')
@@ -35,6 +40,7 @@ class TabularDataset(Dataset):
             print(f'      Mixed dataset sampling: {mixed_datasets}, {samples_per_dataset} samples each')
             dataset_samples = {dataset: [] for dataset in mixed_datasets}
         try:
+            # Load JSONL data file
             with open(data_path, 'r') as f:
                 for line_idx, line in enumerate(f):
                     try:

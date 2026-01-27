@@ -43,14 +43,24 @@ def get_expert_for_vlm_type():
 
 
 class DynamicExpertSelector(nn.Module):
+    """
+    Dynamic expert selector that routes table-query pairs to optimal paths.
+    - Maintains frozen pretrained single-modality experts (Text, VLM)
+    - Learns a lightweight MLP gating network to route queries
+    - Optionally supports late fusion via API calls
+    """
     def __init__(self, gate_hidden_dim, use_late_fusion):
         super().__init__()
         self.use_late_fusion = use_late_fusion
         self.device = torch.device(cfg["TRAINING"]["DEVICE"])
+        
+        # Initialize frozen text-based expert
         print("Initializing Experts...")
         self.expert_text = TableGPT2Expert(
             model_path=cfg["MODEL"]["TEXT_EXPERT_ID"]
         ).to(self.device)
+        
+        # Initialize frozen vision-language expert
         vlm_expert_id = cfg["MODEL"]["VLM_EXPERT_ID"]
         vlm_expert_type = cfg["MODEL"].get("VLM_EXPERT_TYPE", "TableLLaVA")
         if vlm_expert_type.lower() == "ovis2":
@@ -70,11 +80,15 @@ class DynamicExpertSelector(nn.Module):
                 f"WARN: Unknown VLM_EXPERT_TYPE {vlm_expert_type}; defaulting to TableLLavaExpert from {vlm_expert_id}"
             )
             self.expert_vlm = TableLLavaExpert(model_path=vlm_expert_id).to(self.device)
+        
+        # Store base experts (only Text and VLM are frozen)
         self.base_experts = nn.ModuleList([self.expert_text, self.expert_vlm])
         self.all_experts_for_selection_list_for_cost = [
             self.expert_text,
             self.expert_vlm,
         ]
+        
+        # Initialize fusion expert via API (if enabled)
         self.fusion_expert_api = None
         self.path_names = ["TextExpert", "VLMExpert"]
         if self.use_late_fusion:
@@ -84,7 +98,11 @@ class DynamicExpertSelector(nn.Module):
             )
             self.all_experts_for_selection_list_for_cost.append(self.fusion_expert_api)
             self.path_names.append("FusionExpert")
+        
+        # Total number of routing paths
         self.num_paths = len(self.all_experts_for_selection_list_for_cost)
+        
+        # Determine question embedding dimension for gating network
         print("Determining question embedding dimension...")
         from transformers import AutoConfig
 
@@ -96,6 +114,8 @@ class DynamicExpertSelector(nn.Module):
         except Exception:
             self.question_embed_dim = 384
         print(f"Question embedding dimension: {self.question_embed_dim}")
+        
+        # Calculate gating network input dimension
         print("Calculating Gate Input Dimension...")
         self.gate_input_dim = (
             self.expert_text.gate_feature_dim
