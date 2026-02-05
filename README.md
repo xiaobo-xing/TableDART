@@ -9,6 +9,9 @@
 4. [Inference](#inference)
 5. [Evaluation](#evaluation)
 6. [Citation](#citation)
+7. [License](#license)
+8. [Acknowledgments](#acknowledgments)
+
 
 ---
 ## 1. Introduction
@@ -62,7 +65,7 @@ Extensive experiments on seven benchmarks demonstrate that TableDART achieves st
 
 ---
 
-## Training
+## 3. Training
 
 You can directly use our pretrained gating network checkpoint at `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`, or train the gating network from scratch following the steps below.
 
@@ -87,7 +90,7 @@ python train.py
 
 ---
 
-## Inference
+## 4. Inference
 
 Standard run: 
 ```bash
@@ -102,7 +105,7 @@ python inference.py --measure_efficiency
 
 ---
 
-## Evaluation
+## 5. Evaluation
 
 Run evaluation with:
 ```bash
@@ -111,9 +114,9 @@ python evaluation/MMTab_evaluation.py
 
 ---
 
-## Citation
+## 6. Citation
 
-If you find TableDART helpful, please cite the paper and star this repository!.
+If you find TableDART helpful, please cite the paper and star this repository! Many thanks!
 
 **ArXiv Version:**
 ```bibtex
@@ -130,4 +133,10 @@ If you find TableDART helpful, please cite the paper and star this repository!.
 
 **ICLR 2026 Version:**
 
-Coming soon
+Coming soon. The ICLR version will be updated once the official proceedings are available.
+
+## 7. License
+This project is licensed under the [MIT License](LICENSE).
+
+## 8. Acknowledgments
+This work benefits from the previous excellent work of [TableGPT2](https://github.com/tablegpt/tablegpt-agent), [Ovis2](https://github.com/AIDC-AI/Ovis), [Qwen2.5-VL](https://huggingface.co/collections/Qwen/qwen2.5-vl), and [Gemini 2.0 Flash](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-0-flash).
