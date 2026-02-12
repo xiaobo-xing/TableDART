@@ -118,6 +118,17 @@ python evaluation/MMTab_evaluation.py
 
 If you find TableDART helpful, please cite the paper and star this repository! Many thanks!
 
+**ICLR 2026 Version:**
+```bibtex
+@inproceedings{xing2026tabledart,
+    title={Table{DART}: Dynamic Adaptive Multi-Modal Routing for Table Understanding},
+    author={Xiaobo Xing and Wei Yuan and Tong Chen and Quoc Viet Hung Nguyen and Xiangliang Zhang and Hongzhi Yin},
+    booktitle={The Fourteenth International Conference on Learning Representations},
+    year={2026},
+    url={https://openreview.net/forum?id=4aZTiLH3fm}
+}
+```
+
 **ArXiv Version:**
 ```bibtex
 @misc{xing2025tabledartdynamicadaptivemultimodal,
@@ -130,10 +141,6 @@ If you find TableDART helpful, please cite the paper and star this repository! M
     url={https://arxiv.org/abs/2509.14671}
 }
 ```
-
-**ICLR 2026 Version:**
-
-Coming soon. The ICLR version will be updated once the official proceedings are available.
 
 ## 7. License
 This project is licensed under the [MIT License](LICENSE).
