@@ -1,6 +1,11 @@
 # TableDART: Dynamic Adaptive Multi-Modal Routing for Table Understanding
 
-**Source code for paper:** *TableDART: Dynamic Adaptive Multi-Modal Routing for Table Understanding* (Accepted in ICLR 2026) - [[ArXiv](https://arxiv.org/abs/2509.14671)] [[ICLR 2026 OpenReview](https://openreview.net/forum?id=4aZTiLH3fm)]
+**Source code for paper:** *TableDART: Dynamic Adaptive Multi-Modal Routing for Table Understanding* (Accepted in ICLR 2026) 
+
+[![ArXiv](https://img.shields.io/badge/ArXiv-2509.14671-b31b1b?logo=arxiv)](https://arxiv.org/abs/2509.14671)
+[![OpenReview](https://img.shields.io/badge/OpenReview-ICLR%202026-8c1aff)](https://openreview.net/forum?id=4aZTiLH3fm)
+[![Hugging Face](https://img.shields.io/badge/HuggingFace-Model-yellow?logo=huggingface)](https://huggingface.co/XiaoboX/TableDART)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -14,18 +19,21 @@
 
 
 ---
-## 1. Introduction
+## Introduction
 Modeling semantic and structural information from tabular data remains a core challenge for effective table understanding. Existing LLM-based table understanding methods face a fundamental dilemma: Table-as-Text approaches flatten tables into textual sequences, but inevitably lose crucial structural cues; Table-as-Image methods preserve the visual structure, yet struggle to capture precise semantic information; Recent Table-as-Multimodality strategies attempt to combine textual and visual views through large multimodal language models (MLLMs), but they statically process all modalities for every query-table pair regardless of their utility, inevitably introducing redundancy and potential conflicts when textual and visual representations provide inconsistent cues. Furthermore, these approaches depend on costly fine-tuning of MLLMs, limiting their practical applicability.
 
 To address this challenge, we propose **TableDART**, a training-efficient framework that integrates multimodal views by reusing pretrained single-modality expert models while keeping them frozen. We learn only a lightweight **2.59M-parameter MLP gating network** that dynamically selects the optimal path (Text-only, Image-only, or Fusion) for each table-query pair, effectively reducing redundancy and avoiding conflicts. Additionally, we introduce an intelligent LLM agent-based approach that mediates cross-modal knowledge integration by analyzing outputs from text and image models, either selecting the best result or synthesizing a new answer through reasoning over potentially inconsistent or incomplete fragments from different modalities. This training-efficient design requires fine-tuning of merely 2.59M parameters while keeping all pretrained single-modality models frozen, thereby avoiding the prohibitive costs of full LLM/MLLM fine-tuning while achieving competitive or superior performance.
 
 Extensive experiments on seven benchmarks demonstrate that TableDART achieves state-of-the-art performance on 4 out of 7 benchmarks among open-source models, surpassing the strongest baseline by an average of **4.02%**, while maintaining significant computational efficiency gains.
 
-![TableDART Architecture](TableDART_architecture_illustraion.jpg)
+<p align="center">
+  <img src="TableDART_architecture_illustraion.jpg" width="800"/>
+</p>
 
 
-## 2. Dataset Description
 
+## Dataset Description
+We evaluate on 7 table understanding benchmarks, including MMTab and related datasets.
 ### Data Preparation
 1) **Install Dependencies**
     - `conda create -n tabledart python=3.10`
@@ -61,11 +69,11 @@ Extensive experiments on seven benchmarks demonstrate that TableDART achieves st
    - The script pulls dataset names from `cfg["DATA"]["MIXED_DATASETS"]` and writes `mixed_train.jsonl`, `mixed_val.jsonl`, and `dataset_summary.json` under `data/processed_datasets/`
    - Sampling uses a fixed random seed (42) in code for reproducibility. 
   
-    After generate or directly use our mixed dataset, point `TRAIN_PATH` and `VAL_PATH` in `project_config/config.py` to the generated files.
+    After generating or directly using our mixed dataset, point `TRAIN_PATH` and `VAL_PATH` in `project_config/config.py` to the generated files.
 
 ---
 
-## 3. Training
+## Training
 
 You can directly use our pretrained gating network checkpoint at `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`, or train the gating network from scratch following the steps below.
 
@@ -85,12 +93,14 @@ Start to train the gating network by running:
 python train.py
 ```
   - Checkpoints and plots will appear in `checkpoints/Mixed_Dataset_Training/` (configurable via `cfg["TRAINING"]["CHECKPOINT_DIR"]`).
-  - **⭐️ Our trained checkpoint is provided** at `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`. 
-    - (Optional) Update `cfg["TRAINING"]["INFERENCE_CHECKPOINT"]` to your checkpoint path so evaluation scripts pick it up automatically.
+  - ⭐️ We provide our trained gating network checkpoint:
+    - Local path: `checkpoints/LAMBDA_RESOURCE_LOSS_0.15/best_model_gate.pth`. 
+    - Hugging Face Model Hub: https://huggingface.co/XiaoboX/TableDART
+  - (Optional) Update `cfg["TRAINING"]["INFERENCE_CHECKPOINT"]` to your checkpoint path so evaluation scripts pick it up automatically.
 
 ---
 
-## 4. Inference
+## Inference
 
 Standard run: 
 ```bash
@@ -105,7 +115,7 @@ python inference.py --measure_efficiency
 
 ---
 
-## 5. Evaluation
+## Evaluation
 
 Run evaluation with:
 ```bash
@@ -114,9 +124,9 @@ python evaluation/MMTab_evaluation.py
 
 ---
 
-## 6. Citation
+## Citation
 
-If you find TableDART helpful, please cite the paper and star this repository! Many thanks!
+If you use TableDART in your research, please cite and consider starring this repository. Many thanks!
 
 **ICLR 2026 Version:**
 ```bibtex
@@ -142,8 +152,8 @@ If you find TableDART helpful, please cite the paper and star this repository! M
 }
 ```
 
-## 7. License
+## License
 This project is licensed under the [MIT License](LICENSE).
 
-## 8. Acknowledgments
+## Acknowledgments
 This work benefits from the previous excellent work of [TableGPT2](https://github.com/tablegpt/tablegpt-agent), [Ovis2](https://github.com/AIDC-AI/Ovis), [Qwen2.5-VL](https://huggingface.co/collections/Qwen/qwen2.5-vl), and [Gemini 2.0 Flash](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-0-flash).
