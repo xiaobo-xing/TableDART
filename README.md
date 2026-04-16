@@ -45,20 +45,23 @@ We evaluate on 7 table understanding benchmarks, including MMTab and related dat
     - Edit `project_config/config.py` such as dataset paths, table image directories, output folders, API models, and checkpoints，etc.
 
 ### Data Download and Processing
-1) **Data Download.** Download the publicly available MMTab Dataset.
-    ```bash
-    # train
-    wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-instruct_table_images_82K.zip
-    mv MMTab-instruct_table_images_82K.zip
-    unzip MMTab-instruct_table_images_82K.zip
+1. **Training Data.** Download the original training data from [Here](https://huggingface.co/datasets/HaolanWang/HIPPO).  
+   The file used as the input to `create_mixed_dataset.py` is:
 
-    # test
-    wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-eval_table_images_23K.zip
-    mv MMTab-eval_table_images_23K.zip hippo/
-    unzip MMTab-eval_table_images_23K.zip
-    ```
+   - `train_data.jsonl`
 
-2) **Create mixed training/validation splits**. Regenerate the mixed data with:
+2. **Test Data.** Can be found at `data/test/test_data.jsonl'.
+3. **Table Images.** Download the publicly available MMTab table images.
+  ``` python
+  # train images
+  wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-instruct_table_images_82K.zip
+  unzip MMTab-instruct_table_images_82K.zip
+
+  # test images
+  wget https://huggingface.co/datasets/SpursgoZmy/MMTab/resolve/main/MMTab-eval_table_images_23K.zip
+  unzip MMTab-eval_table_images_23K.zip
+ ```
+4. **Create mixed training/validation splits**. Regenerate the mixed data with:
    ```bash
    python data/create_mixed_dataset.py \
      --input_file data/your_data_path/train_data.jsonl \
@@ -156,4 +159,4 @@ If you use TableDART in your research, please cite and consider starring this re
 This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgments
-This work benefits from the previous excellent work of [TableGPT2](https://github.com/tablegpt/tablegpt-agent), [Ovis2](https://github.com/AIDC-AI/Ovis), [Qwen2.5-VL](https://huggingface.co/collections/Qwen/qwen2.5-vl), and [Gemini 2.0 Flash](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-0-flash).
+This work benefits from the previous excellent work of [TableGPT2](https://github.com/tablegpt/tablegpt-agent), [Ovis2](https://github.com/AIDC-AI/Ovis), [Qwen2.5-VL](https://huggingface.co/collections/Qwen/qwen2.5-vl), [HIPPO](https://github.com/NEUIR/HIPPO/tree/main?tab=readme-ov-file), and [Gemini 2.0 Flash](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-0-flash).
